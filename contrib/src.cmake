@@ -149,6 +149,14 @@ if (SOLOUD_BACKEND_NULL)
 	add_definitions(-DWITH_NULL)
 endif()
 
+if (SOLOUD_BACKEND_NOSOUND)
+	set (BACKENDS_SOURCES
+		${BACKENDS_SOURCES}
+		${BACKENDS_PATH}/nosound/soloud_nosound.cpp
+	)
+	add_definitions(-DWITH_NOSOUND)
+endif()
+
 if (SOLOUD_BACKEND_SDL2)
 	find_package (SDL2 REQUIRED)
 	include_directories (${SDL2_INCLUDE_DIR})

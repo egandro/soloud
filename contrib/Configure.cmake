@@ -14,6 +14,9 @@ print_option_status (SOLOUD_BUILD_DEMOS "Build demos")
 option (SOLOUD_BACKEND_NULL "Set to ON for building NULL backend" ON)
 print_option_status (SOLOUD_BACKEND_NULL "NULL backend")
 
+option (SOLOUD_BACKEND_NOSOUND "Set to ON for building NOSOUND backend" ON)
+print_option_status (SOLOUD_BACKEND_NOSOUND "NOSOUND backend")
+
 option (SOLOUD_BACKEND_SDL2 "Set to ON for building SDL2 backend" ON)
 print_option_status (SOLOUD_BACKEND_SDL2 "SDL2 backend")
 
