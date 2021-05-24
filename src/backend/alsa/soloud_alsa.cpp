@@ -93,6 +93,7 @@ namespace SoLoud
         }
         snd_pcm_drain(data->alsaDeviceHandle);
         snd_pcm_close(data->alsaDeviceHandle);
+	snd_config_update_free_global();
         if (0 != data->sampleBuffer)
         {
             delete[] data->sampleBuffer;
