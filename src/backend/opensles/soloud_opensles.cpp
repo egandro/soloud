@@ -46,7 +46,7 @@ namespace SoLoud
 #endif
 
 // Error logging.
-#if defined( __ANDROID__ ) 
+#if defined( __ANDROID__ )
 #  include <android/log.h>
 #  define LOG_ERROR( _msg ) \
    __android_log_print( ANDROID_LOG_ERROR, "SoLoud", _msg )
@@ -145,7 +145,7 @@ namespace SoLoud
 			data->activeBuffer = (data->activeBuffer + 1) % NUM_BUFFERS;
 			short * nextBuffer = data->outputBuffers[data->activeBuffer];
 
-			// Mix this buffer. 
+			// Mix this buffer.
 			const int bufferSizeBytes = data->bufferSize * data->channels * sizeof(short);
 			(*data->playerBufferQueue)->Enqueue(data->playerBufferQueue, outputBuffer, bufferSizeBytes);
 			++data->buffersQueued;
@@ -174,7 +174,7 @@ namespace SoLoud
 		BackendData *data = static_cast<BackendData*>(soloud->mBackendData);
 		if( event & SL_PLAYEVENT_HEADATEND )
 		{
-			data->buffersQueued--;
+			if (data->buffersQueued > 0) data->buffersQueued--;
 		}
 	}
 
@@ -200,7 +200,7 @@ namespace SoLoud
 			return UNKNOWN_ERROR;
 		}
 
-		// Realize and get engine interfaxce.	
+		// Realize and get engine interfaxce.
 		(*data->engineObj)->Realize(data->engineObj, SL_BOOLEAN_FALSE);
 		if((*data->engineObj)->GetInterface(data->engineObj, SL_IID_ENGINE, &data->engine) != SL_RESULT_SUCCESS)
 		{
@@ -246,7 +246,7 @@ namespace SoLoud
 		{
 			format.channelMask = SL_SPEAKER_FRONT_CENTER;
 		}
-		 
+
 		SLDataSource src;
 		src.pLocator = &data->inLocator;
 		src.pFormat = &format;
@@ -254,7 +254,7 @@ namespace SoLoud
 		// Output mix.
 		data->outLocator.locatorType = SL_DATALOCATOR_OUTPUTMIX;
 		data->outLocator.outputMix = data->outputMixObj;
-		 
+
 		data->dstDataSink.pLocator = &data->outLocator;
 		data->dstDataSink.pFormat = NULL;
 
@@ -262,14 +262,14 @@ namespace SoLoud
 		{
 			const SLInterfaceID ids[] = { SL_IID_VOLUME, SL_IID_ANDROIDSIMPLEBUFFERQUEUE };
 			const SLboolean req[] = { SL_BOOLEAN_TRUE, SL_BOOLEAN_TRUE };
- 
+
 			(*data->engine)->CreateAudioPlayer(data->engine, &data->playerObj, &src, &data->dstDataSink, sizeof(ids) / sizeof(ids[0]), ids, req);
-		 
+
 			(*data->playerObj)->Realize(data->playerObj, SL_BOOLEAN_FALSE);
-	 
+
 			(*data->playerObj)->GetInterface(data->playerObj, SL_IID_PLAY, &data->player);
 			(*data->playerObj)->GetInterface(data->playerObj, SL_IID_VOLUME, &data->playerVol);
- 
+
 			(*data->playerObj)->GetInterface(data->playerObj, SL_IID_ANDROIDSIMPLEBUFFERQUEUE, &data->playerBufferQueue);
 		}
 
@@ -296,6 +296,6 @@ namespace SoLoud
 
 		aSoloud->mBackendString = "OpenSL ES";
 		return SO_NO_ERROR;
-	}	
+	}
 };
 #endif
