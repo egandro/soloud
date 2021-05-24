@@ -5,7 +5,8 @@ ABIS="armeabi-v7a arm64-v8a x86 x86_64"
 
 mkdir -p out
 mkdir -p out/bin
-cp -r ./include out_android
+mkdir -p out/include
+cp -r ./include out/include/soloud
 cd out
 
 for ABI in ${ABIS}
